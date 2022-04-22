@@ -1,92 +1,142 @@
 <script>
-    import RecipeCard from "../../lib/RecipeCard.svelte";
-    import SearchHeader from "../../lib/SearchHeader.svelte";
-    import {onMount} from 'svelte';
-    import {page} from '$app/stores';
+    import RecipeCard from '../../lib/RecipeCard.svelte';
+    import SearchHeader from '../../lib/SearchHeader.svelte';
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
     import { sortBy } from '../../stores';
-    // import { getData } from '../../lib/searchAPI';
-    // import { scrape } from '../../lib/scrapingAPI';
+    import { getData } from '../../lib/searchAPI';
+    import { scrape } from '../../lib/scrapingAPI';
+    // import {getCalories} from '../../lib/nutritionAPI'
     // import {getCarbonFootprint} from '../../lib/carbonReader'
+    // import {getSum} from '../../lib/water'
+  
  
 
     let items = [];
-    $: console.log(items)
-    onMount(async () => {
-        let searchText = $page.url.pathname.substring(1)
-        items = await getData(searchText);
+    let filteredItems = [];
+    let scrapeResult = '';
+    //$: console.log(items)
 
-    })
-    
-    const data = [
-        {
-            name: "Singapore chilli crab with brussel sprouts and mashed potatoes",
-            carbon: 0.5, 
-            water: 500,
-            calories: 455
-        },
-        {
-            name: "Best chili crab recipe",
-            carbon: 0.4,
-            water: 650,
-            calories: 460
-        },
-        {
-            name: "Extra spicy chilli crab",
-            carbon: 0.55, 
-            water: 450,
-            calories: 380
-        },
-        {
-            name: "Quick n easy chilli crab",
-            carbon: 0.7, 
-            water: 700,
-            calories: 620
-        },
-    
-    ]
-    
-    /*
-    $: $sortBy, sortData();
-    
-    function sortData() {
-        data.sort((a, b))
+    // onMount(async () => {
+    //     let searchText = $page.url.pathname.substring(1)
+    //     items = await getData(searchText);
+    // })
+    async function loadItems() {
+        items = []
+        items = await getData($page.url.pathname.substring(1));
+        // console.log(items)
+
+        for (let item of items) {
+            scrapeResult = await scrape(item.link);
+            if (scrapeResult.recipe !== 'no recipe found on page') {
+                filteredItems = [...filteredItems, scrapeResult];
+                console.log(scrapeResult.recipe);
+            }
+        }
+        console.log('filtered items', filteredItems);
+
+        await addStatistics();
     }
-    */
+
+    const addStatistics = async () => {
+        for (let item of filteredItems) {
+            console.log(item.recipe.title);
+            // item.recipe.calories = await getCalories(item.recipe.ingredients);
+            // item.recipe.carbon = await getCarbonFootprint(item.recipe.ingredients);
+            // item.recipe.water = await getSum(item.recipe.ingredients);
+        }
+    };
+
+    //on change of pathname, reload items
+    $: $page.url.pathname, loadItems()
+
+    // const data = [
+    //     {
+    //         name: "Singapore chilli crab with brussel sprouts and mashed potatoes",
+    //         carbon: 0.5,
+    //         water: 500,
+    //         calories: 455
+    //     },
+    //     {
+    //         name: "Best chili crab recipe",
+    //         carbon: 0.4,
+    //         water: 650,
+    //         calories: 460
+    //     },
+    //     {
+    //         name: "Extra spicy chilli crab",
+    //         carbon: 0.55,
+    //         water: 450,
+    //         calories: 380
+    //     },
+    //     {
+    //         name: "Quick n easy chilli crab",
+    //         carbon: 0.7,
+    //         water: 700,
+    //         calories: 620
+    //     },
+
+    // ]
+
+    
+
+    
+    $: $sortBy, sortData();
+
+    function sortData() {
+        filteredItems = filteredItems.sort((a, b) => {
+            console.log($sortBy);
+            if ($sortBy == 'Calories') {
+                return a.calories - b.calories;
+            } else if ($sortBy == 'Carbon') {
+                return a.carbon - b.carbon;
+            } else if ($sortBy == 'Water') {
+                return a.water - b.water;
+            }
+        });
+        console.log(filteredItems);
+    }
+    
     </script>
-    
+
     <SearchHeader />
-    
+
     <div id="results">
-        {#each items as recipe, i}
+        {#each filteredItems as item, i}
         <div class="row">
-            <p>{i+1}</p>
-            <RecipeCard title={recipe.title}/>
+            <p>{i + 1}</p>
+            <RecipeCard
+                title={item.recipe.name}
+                calories={item.recipe.calories}
+                carbon={item.recipe.carbon}
+                water={item.recipe.water}
+                link={item.link}
+            />
         </div>
         {/each}
-        
-        
+
+
     </div>
-    
+
     <style>
         #results {
             display: flex;
             flex-direction: column;
             margin-left: 5rem;
         }
-    
+
         .row {
             display: flex;
             align-items: center;
             margin-bottom: 2rem;
         }
-    
+
         p {
             width: 5px;
             margin-right: 2rem;
             padding: 0;
             font-family: 'Lexend Deca', sans-serif;
         }
-    
-    
+
+
     </style>
-    
