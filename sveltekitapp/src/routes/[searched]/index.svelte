@@ -6,7 +6,7 @@
     import { sortBy } from '../../stores';
     import { getData } from '../../lib/searchAPI';
     import { scrape } from '../../lib/scrapingAPI';
-    // import {getCalories} from '../../lib/nutritionAPI'
+    import {getCalories} from '../../lib/nutritionAPI'
     // import {getCarbonFootprint} from '../../lib/carbonReader'
     // import {getSum} from '../../lib/water'
   
@@ -27,6 +27,7 @@
         // console.log(items)
 
         for (let item of items) {
+            //scrape recipe
             scrapeResult = await scrape(item.link);
             if (scrapeResult.recipe !== 'no recipe found on page') {
                 filteredItems = [...filteredItems, scrapeResult];
@@ -40,10 +41,11 @@
 
     const addStatistics = async () => {
         for (let item of filteredItems) {
-            console.log(item.recipe.title);
-            // item.recipe.calories = await getCalories(item.recipe.ingredients);
+            console.log(item.recipe.name);
+            item.recipe.calories = await getCalories(item.recipe.ingredients);
             // item.recipe.carbon = await getCarbonFootprint(item.recipe.ingredients);
             // item.recipe.water = await getSum(item.recipe.ingredients);
+            console.log(item.recipe);
         }
     };
 
