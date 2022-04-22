@@ -13,5 +13,8 @@
     "@sveltejs/kit": "next",
     "svelte": "^3.46.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "sveltestrap": "^5.9.0"
+  }
 }
