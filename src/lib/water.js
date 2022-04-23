@@ -18,7 +18,7 @@ let waterFootprint = {
 	'Spices and Herbs': 7048,
 	'Nut and Seed Products': 9063,
 	'Fats and Oils': 2364,
-	'Restauraunt Foods': 0, //no data
+	'Restaurant Foods': 0, //no data
 	'Soups, Sauces, and Gravies': 62,
 	Sweets: 183, // 87% of sugar-cane is turned into sugar
 	Beverages: 35
