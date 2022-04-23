@@ -3,35 +3,44 @@
   export let title="", calories=455, water=500, carbon=0.5, link='', hostname='';
 </script>
 
-<a href={link}>
-  <div class="recipeCard">
-    <h1 class="recipeTitle">{title} <p class="hostname">{hostname}</p></h1>
-    <ul>
-      <li class="calories">
-        <div class="stat">
-          <img src="./images/fire.svg" alt=""><p>{calories}kcal</p>
-        </div>
-      </li>
-  
-      <li class="water">
-        <div class="stat">
-          <img src="./images/water.svg" alt=""><p>{water}L</p>
-        </div>
-      </li>
-      
-      <li class="carbon">
-        <div class="stat">
-          <img src="./images/carbon.svg" alt=""><p>{carbon}kg</p>
-        </div>
-      </li>
-  
-    </ul>
-  </div>
-</a>
+<div class="recipeWrapper">
+  <a href={link}>
+    <div class="recipeCard">
+      <h1 class="recipeTitle">{title} <p class="hostname">{hostname}</p></h1>
+      <ul>
+        <li class="calories">
+          <div class="stat">
+            <img src="./images/fire.svg" alt=""><p>{calories}kcal</p>
+          </div>
+        </li>
+    
+        <li class="water">
+          <div class="stat">
+            <img src="./images/water.svg" alt=""><p>{water}L</p>
+          </div>
+        </li>
+        
+        <li class="carbon">
+          <div class="stat">
+            <img src="./images/carbon.svg" alt=""><p>{carbon}kg</p>
+          </div>
+        </li>
+    
+      </ul>
+    </div>
+  </a>
+</div>
+
 
 
 
 <style>
+  .recipeWrapper {
+    height: 100px;
+    width: 60vw;
+    max-width: 800px;
+  }
+
   .recipeCard {
     height: 100px;
     width: 60vw;
@@ -127,6 +136,7 @@
 
   a {
     text-decoration: none;
+    display: block;
   }
 
   @media screen and (max-width: 650px) {
@@ -137,6 +147,11 @@
       justify-content: space-around;
       align-items: center;
       margin: 0;
+    }
+
+    .recipeWrapper {
+      height: 300px;
+      width: 65vw;
     }
 
     .recipeTitle {

@@ -23,6 +23,7 @@
     // })
     async function loadItems() {
         items = []
+        filteredItems = []
         items = await getData($page.url.pathname.substring(1));
         // console.log(items)
 
@@ -38,6 +39,7 @@
         console.log('filtered items', filteredItems);
 
         filteredItems = await addStatistics(filteredItems);
+        //addStatistics(filteredItems);
     }
 
     const addStatistics = async (filteredItems) => {
@@ -50,11 +52,27 @@
             console.log(ingredients)
             let nServings = parseInt(item.recipe.servings);
             
+            // Promise.allSettled([getCalories(ingredients, nServings), getCarbonFootprint(ingredients, nServings), getSum(ingredients, nServings)])
+            // .then(results => {
+
+                
+            //     console.log(`CALORIES: ${results[0].value}`)
+            //     console.log(`CARBON: ${results[1].value}`)
+            //     console.log(`WATER: ${results[2].value}`)
+            //     item.recipe.calories = results[0].value
+            //     item.recipe.carbon = results[1].value
+            //     item.recipe.water = results[2].value
+                
+            //     filteredItems = filteredItems
+            // })
+                
+
+
             item.recipe.calories = await getCalories(ingredients, nServings);
             item.recipe.carbon = await getCarbonFootprint(ingredients, nServings);
             item.recipe.water = await getSum(ingredients, nServings);
             
-            console.log(`RECIPE: ${item.recipe}`);
+            //console.log(`RECIPE: ${item.recipe}`);
         }
         return filteredItems
     };
@@ -97,7 +115,7 @@
 
     function sortData() {
         filteredItems = filteredItems.sort((a, b) => {
-            console.log(`A: ${a}`)
+            // console.log(`A: ${a}`)
             console.log($sortBy);
             if ($sortBy == 'Calories') {
                 return a.recipe.calories - b.recipe.calories;

@@ -5,6 +5,13 @@
     //let searchText = $page.params.searched ? $page.params.searched : ""
     let searchText = decodeURI($page.url.pathname.substring(1))
 
+    //on change of pathname, update search text
+    $: $page.url.pathname, updateSearchText()
+    
+    function updateSearchText() {
+        searchText = decodeURI($page.url.pathname.substring(1))
+    }
+
     function search() {
         //update url
         goto(`${searchText}`)
