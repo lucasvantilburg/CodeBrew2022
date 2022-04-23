@@ -44,7 +44,7 @@
         for (let item of filteredItems) {
 
             item.hostname = (new URL(await item.link)).hostname;
-            
+
             //console.log(item.recipe.name);
             const ingredients = await getFoodData(item.recipe.ingredients)
             console.log(ingredients)
@@ -97,13 +97,14 @@
 
     function sortData() {
         filteredItems = filteredItems.sort((a, b) => {
+            console.log(`A: ${a}`)
             console.log($sortBy);
             if ($sortBy == 'Calories') {
-                return a.calories - b.calories;
+                return a.recipe.calories - b.recipe.calories;
             } else if ($sortBy == 'Carbon') {
-                return a.carbon - b.carbon;
+                return a.recipe.carbon - b.recipe.carbon;
             } else if ($sortBy == 'Water') {
-                return a.water - b.water;
+                return a.recipe.water - b.recipe.water;
             }
         });
         console.log(filteredItems);
