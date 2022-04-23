@@ -1,6 +1,6 @@
 <script>
   /* JSON for each Recipe */
-  export let title="", calories=455, water=500, carbon=0.5, link='', hostname='';
+  export let title="", calories=0, water=0, carbon=0, link='', hostname='';
 </script>
 
 <div class="recipeWrapper">
