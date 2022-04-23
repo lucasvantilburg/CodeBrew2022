@@ -8,7 +8,7 @@
     import { scrape } from '../../lib/scrapingAPI';
     import {getCalories} from '../../lib/nutritionAPI'
     // import {getCarbonFootprint} from '../../lib/carbonReader'
-    // import {getSum} from '../../lib/water'
+    import {getSum} from '../../lib/water'
   
  
 
@@ -31,7 +31,7 @@
             scrapeResult = await scrape(item.link);
             if (scrapeResult.recipe !== 'no recipe found on page') {
                 filteredItems = [...filteredItems, scrapeResult];
-                console.log(scrapeResult.recipe);
+                // console.log(scrapeResult.recipe);
             }
         }
         console.log('filtered items', filteredItems);
@@ -44,7 +44,7 @@
             console.log(item.recipe.name);
             item.recipe.calories = await getCalories(item.recipe.ingredients);
             // item.recipe.carbon = await getCarbonFootprint(item.recipe.ingredients);
-            // item.recipe.water = await getSum(item.recipe.ingredients);
+            item.recipe.water = await getSum(item.recipe.ingredients);
             console.log(item.recipe);
         }
     };
