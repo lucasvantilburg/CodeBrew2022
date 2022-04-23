@@ -1,3 +1,4 @@
+
 ## Inspiration
 It is a fact that the foods we love are killing the planet. Despite being aware of the negative impacts animal products have on the environment, we remain inflexible when it comes to our lifestyle. Many people consider turning to a plant-based diet, but change requires significant effort. Where does that leave our planet in the interim?
 
@@ -76,4 +77,3 @@ Water:
 ### Other Resources
 
 Recipe Scraper: https://github.com/jadkins89/Recipe-Scraper
-
