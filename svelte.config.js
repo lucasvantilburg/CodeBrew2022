@@ -1,16 +1,15 @@
-import node from "@sveltejs/adapter-node";import preprocess from "svelte-preprocess";
+import adapter from '@sveltejs/adapter-node';
 
-  /** @type {import('@sveltejs/kit').Config} */
-  const config = {
-    // Consult https://github.com/sveltejs/svelte-preprocess
-    // for more information about preprocessors
-    preprocess: preprocess(),
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+	kit: {
+		adapter: adapter(),
 
-    kit: {
-      // hydrate the <div id="svelte"> element in src/app.html
-      target: "#svelte",
-      adapter: node({ env: { port: process.env.PORT } }),
-    },
-  };
+		// Override http methods in the Todo forms
+		methodOverride: {
+			allowed: ['PATCH', 'DELETE']
+		}
+	}
+};
 
-  export default config;
+export default config;
