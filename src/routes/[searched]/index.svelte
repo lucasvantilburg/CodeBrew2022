@@ -34,16 +34,18 @@
                 scrapeResult.link = item.link
                 filteredItems = [...filteredItems, scrapeResult];
                 // console.log(scrapeResult.recipe);
+                addStatistics(scrapeResult)
             }
         }
         console.log('filtered items', filteredItems);
 
-        filteredItems = await addStatistics(filteredItems);
+        //filteredItems = await addStatistics(filteredItems);
         //addStatistics(filteredItems);
     }
 
-    const addStatistics = async (filteredItems) => {
-        for (let item of filteredItems) {
+    //const addStatistics = async (filteredItems) => {
+    const addStatistics = async (item) => {
+        //for (let item of filteredItems) {
 
             item.hostname = (new URL(await item.link)).hostname;
 
@@ -52,29 +54,29 @@
             console.log(ingredients)
             let nServings = parseInt(item.recipe.servings);
             
-            // Promise.allSettled([getCalories(ingredients, nServings), getCarbonFootprint(ingredients, nServings), getSum(ingredients, nServings)])
-            // .then(results => {
+            Promise.allSettled([getCalories(ingredients, nServings), getCarbonFootprint(ingredients, nServings), getSum(ingredients, nServings)])
+            .then(results => {
 
                 
-            //     console.log(`CALORIES: ${results[0].value}`)
-            //     console.log(`CARBON: ${results[1].value}`)
-            //     console.log(`WATER: ${results[2].value}`)
-            //     item.recipe.calories = results[0].value
-            //     item.recipe.carbon = results[1].value
-            //     item.recipe.water = results[2].value
+                console.log(`CALORIES: ${results[0].value}`)
+                console.log(`CARBON: ${results[1].value}`)
+                console.log(`WATER: ${results[2].value}`)
+                item.recipe.calories = results[0].value
+                item.recipe.carbon = results[1].value
+                item.recipe.water = results[2].value
                 
-            //     filteredItems = filteredItems
-            // })
+                filteredItems = [...filteredItems]
+            })
                 
 
 
-            item.recipe.calories = await getCalories(ingredients, nServings);
-            item.recipe.carbon = await getCarbonFootprint(ingredients, nServings);
-            item.recipe.water = await getSum(ingredients, nServings);
+            // item.recipe.calories = await getCalories(ingredients, nServings);
+            // item.recipe.carbon = await getCarbonFootprint(ingredients, nServings);
+            // item.recipe.water = await getSum(ingredients, nServings);
             
             //console.log(`RECIPE: ${item.recipe}`);
-        }
-        return filteredItems
+        //}
+        //return filteredItems
     };
 
     //on change of pathname, reload items
