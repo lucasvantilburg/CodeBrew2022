@@ -31,9 +31,9 @@
       <img src="./images/downArrow.svg" alt="Down Arrow">
     </DropdownToggle>
     <DropdownMenu class="menu">
-      <DropdownItem class="selectable" on:click={() => handleClick("Carbon footprint")}>Carbon footprint </DropdownItem>
-      <DropdownItem class="selectable" on:click={() => handleClick("Water footprint")}>Water footprint</DropdownItem>
-      <DropdownItem class="selectable" on:click={() => handleClick("Calories")}>Calories</DropdownItem>
+      <DropdownItem class="selectable" on:click={() => handleClick("Carbon")}>Carbon footprint </DropdownItem>
+      <DropdownItem class="selectable" on:click={() => handleClick("Water")}>Water footprint</DropdownItem>
+      <DropdownItem class="selectable" on:click={() => handleClick("Calories")}>Calories (low to high)</DropdownItem>
     </DropdownMenu>
   </Dropdown>
 </div>

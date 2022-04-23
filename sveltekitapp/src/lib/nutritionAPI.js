@@ -1,9 +1,9 @@
 //import fetch from 'node-fetch';
 
-let query = ["3 bananas", "2 tomatoes, 1 banana"];
+//let query = ["3 bananas", "2 tomatoes", "1 banana"];
 
 export const getFoodData = async (foodList) => {
-    query = foodList.join(' ');
+    const query = foodList.join(' ');
     
     try {
         if (query) {
@@ -16,7 +16,8 @@ export const getFoodData = async (foodList) => {
             }
             })
             const jsonResponse = await response.json()
-            // console.log(jsonResponse)
+            //console.log("gettingFood")
+            console.log(`FOOD JSON: ${jsonResponse['items']}`)
             
             return jsonResponse['items']
         }
@@ -28,10 +29,10 @@ export const getFoodData = async (foodList) => {
     return []
 }
 
-export const getCalories = async (query) => {
-    const ingredients = await getFoodData(query)
+export const getCalories = async (ingredients, n_servings) => {
+    
 
-    console.log(ingredients)
+    //console.log(ingredients)
     let calories = 0;
 
     for (const ing of ingredients) {
@@ -40,7 +41,7 @@ export const getCalories = async (query) => {
         calories += ing.calories
     }
     
-    return calories;
+    return Math.round(calories / n_servings);
 }
 
 

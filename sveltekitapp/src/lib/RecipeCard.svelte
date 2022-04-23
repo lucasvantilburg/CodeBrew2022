@@ -1,32 +1,34 @@
 <script>
   /* JSON for each Recipe */
-  export let title="", calories=455, water=500, carbon=0.5;
+  export let title="", calories=455, water=500, carbon=0.5, link='', hostname='';
 </script>
 
+<a href={link}>
+  <div class="recipeCard">
+    <h1 class="recipeTitle">{title} <p class="hostname">{hostname}</p></h1>
+    <ul>
+      <li class="calories">
+        <div class="stat">
+          <img src="./images/fire.svg" alt=""><p>{calories}kcal</p>
+        </div>
+      </li>
+  
+      <li class="water">
+        <div class="stat">
+          <img src="./images/water.svg" alt=""><p>{water}L</p>
+        </div>
+      </li>
+      
+      <li class="carbon">
+        <div class="stat">
+          <img src="./images/carbon.svg" alt=""><p>{carbon}kg</p>
+        </div>
+      </li>
+  
+    </ul>
+  </div>
+</a>
 
-<div class="recipeCard">
-  <h1 class="recipeTitle">{title}</h1>
-  <ul>
-    <li class="calories">
-      <div class="stat">
-        <img src="./images/fire.svg" alt=""><p>{calories}kcal</p>
-      </div>
-    </li>
-
-    <li class="water">
-      <div class="stat">
-        <img src="./images/water.svg" alt=""><p>{water}L</p>
-      </div>
-    </li>
-    
-    <li class="carbon">
-      <div class="stat">
-        <img src="./images/carbon.svg" alt=""><p>{carbon}kg</p>
-      </div>
-    </li>
-
-  </ul>
-</div>
 
 
 <style>
@@ -55,6 +57,12 @@
     font-size: 20px;
     font-family: 'Lexend Deca', sans-serif;
     align-self: center;
+  }
+
+  .hostname {
+    color: #356144;
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 16px;
   }
 
 
@@ -112,6 +120,14 @@
   /* li:not(:last-child) { 
    padding-bottom: 5px;  
     } */
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
 
   @media screen and (max-width: 650px) {
     .recipeCard {

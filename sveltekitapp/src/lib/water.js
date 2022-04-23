@@ -1,7 +1,7 @@
 
 import { getFoodData } from './nutritionAPI.js';
 
-let query = ['1kg steak'];
+//let query = ['1kg steak'];
 
 let waterFootprint = {
 	'Fruits and Fruit Juices': 962,
@@ -24,23 +24,28 @@ let waterFootprint = {
 	Beverages: 35
 };
 
-const getIngredients = async (query) => {
-	let ingredients = await getFoodData(query);
+const getIngredientSizes = (ingredients) => {
+	
 	let ingredient_sizes = {};
 
 	for (const i of ingredients) {
+    //console.log(`INGREDIENT: ${i}`)
 		ingredient_sizes[i['name']] = i['serving_size_g'];
 	}
+
 
 	return ingredient_sizes;
 };
 
-export const getSum = async (query) => {
-	const ingredients = await getIngredients(query);
+export const getSum = async (ingredients, n_servings) => {
+  //console.log(`INGREDIENTS: ${ingredients}`)
 
+  const ingredient_sizes = getIngredientSizes(ingredients)
+  
 	let sum = 0;
-	for (const i of Object.keys(ingredients)) {
-    //console.log(i)
+	for (const i of Object.keys(ingredient_sizes)) {
+  
+    //console.log(`name: ${i}`)
 		let params = {
 			api_key: 'mR6BQGcjgDJLgxQS2uWvQnHhmfPPg9upBIJbB7fP',
 			query: i,
@@ -49,16 +54,20 @@ export const getSum = async (query) => {
 		};
 		
     let result = await getFoodGroup(params);
-    //console.log(result)
+    // console.log(result)
 
     //foods array is empty if no match found
     if (result.totalHits > 0) {
-      let amount_g = ingredients[i];
+      
       const foodCategory = result.foods[0].foodCategory
+      //console.log(foodCategory)
 
       if (foodCategory in waterFootprint) {
+        //console.log(`${waterFootprint[result.foods[0].foodCategory]}`)
+
+        let amount_g = ingredient_sizes[i];
         let litres = (amount_g / 1000) * waterFootprint[result.foods[0].foodCategory];
-        //console.log(litres)
+        //console.log(`LITRES: ${litres}`)
 		    sum += litres;
       }
       else {
@@ -69,7 +78,7 @@ export const getSum = async (query) => {
 		
 	}
   //console.log(sum)
-	return sum;
+	return Math.round(sum / n_servings);
 };
 
 const getFoodGroup = async (params) => {

@@ -6,8 +6,8 @@
     import { sortBy } from '../../stores';
     import { getData } from '../../lib/searchAPI';
     import { scrape } from '../../lib/scrapingAPI';
-    import {getCalories} from '../../lib/nutritionAPI'
-    // import {getCarbonFootprint} from '../../lib/carbonReader'
+    import {getFoodData, getCalories} from '../../lib/nutritionAPI'
+    import {getCarbonFootprint} from '../../lib/carbonReader'
     import {getSum} from '../../lib/water'
   
  
@@ -30,23 +30,33 @@
             //scrape recipe
             scrapeResult = await scrape(item.link);
             if (scrapeResult.recipe !== 'no recipe found on page') {
+                scrapeResult.link = item.link
                 filteredItems = [...filteredItems, scrapeResult];
                 // console.log(scrapeResult.recipe);
             }
         }
         console.log('filtered items', filteredItems);
 
-        await addStatistics();
+        filteredItems = await addStatistics(filteredItems);
     }
 
-    const addStatistics = async () => {
+    const addStatistics = async (filteredItems) => {
         for (let item of filteredItems) {
-            console.log(item.recipe.name);
-            item.recipe.calories = await getCalories(item.recipe.ingredients);
-            // item.recipe.carbon = await getCarbonFootprint(item.recipe.ingredients);
-            item.recipe.water = await getSum(item.recipe.ingredients);
-            console.log(item.recipe);
+
+            item.hostname = (new URL(await item.link)).hostname;
+            
+            //console.log(item.recipe.name);
+            const ingredients = await getFoodData(item.recipe.ingredients)
+            console.log(ingredients)
+            let nServings = parseInt(item.recipe.servings);
+            
+            item.recipe.calories = await getCalories(ingredients, nServings);
+            item.recipe.carbon = await getCarbonFootprint(ingredients, nServings);
+            item.recipe.water = await getSum(ingredients, nServings);
+            
+            console.log(`RECIPE: ${item.recipe}`);
         }
+        return filteredItems
     };
 
     //on change of pathname, reload items
@@ -113,6 +123,7 @@
                 carbon={item.recipe.carbon}
                 water={item.recipe.water}
                 link={item.link}
+                hostname={item.hostname}
             />
         </div>
         {/each}
